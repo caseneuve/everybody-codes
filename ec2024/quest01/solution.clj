@@ -4,14 +4,14 @@
 (defn get-input [part]
   (trim (slurp (format "input%d.txt" part))))
 
-(def POTIONS {\A 0, \B 1, \C 3, \D 5})
+(def CREATURE->POTIONS {\A 0, \B 1, \C 3, \D 5})
 
 (defn solution [part & {:keys [test-input]}]
   (let [input (or test-input (get-input part))]
     (->> input
          (partition part)
-         (map (fn [gr] (keep #(when (not= % \x) (POTIONS %)) gr)))
-         (reduce (fn [acc gr] (apply + acc (get {2 2, 3 6} (count gr) 0) gr))
+         (map (fn [creatures] (keep #(when (not= % \x) (CREATURE->POTIONS %)) creatures)))
+         (reduce (fn [acc potions] (apply + acc (get {2 2, 3 6} (count potions) 0) potions))
                  0))))
 
 (comment
