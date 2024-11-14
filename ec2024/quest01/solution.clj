@@ -5,14 +5,13 @@
   (trim (slurp (format "input%d.txt" part))))
 
 (def POTIONS {\A 0, \B 1, \C 3, \D 5})
-(def EXTRA {0 0, 1 0, 2 2, 3 6})
 
 (defn solution [part & {:keys [test-input]}]
   (let [input (or test-input (get-input part))]
     (->> input
          (partition part)
          (map (fn [gr] (keep #(when (not= % \x) (POTIONS %)) gr)))
-         (reduce (fn [acc gr] (apply + acc (get EXTRA (count gr)) gr))
+         (reduce (fn [acc gr] (apply + acc (get {2 2, 3 6} (count gr) 0) gr))
                  0))))
 
 (comment
