@@ -22,6 +22,6 @@
   (assert (= (solution 2 {:test-input "AxBCDDCAxD"}) 28))
   (solution 2) ; => 5560
 
-  (assert (= (solution  {:test-input "xBxAAABCDxCC"}) 30))
+  (assert (= (solution 3 {:test-input "xBxAAABCDxCC"}) 30))
   (solution 3) ; => 27922
   )
