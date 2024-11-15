@@ -1,13 +1,10 @@
 (ns quest01.solution
-  (:require [clojure.string :refer [trim]]))
-
-(defn get-input [part]
-  (trim (slurp (format "input%d.txt" part))))
+  (:require [tools.input :refer [file->str]]))
 
 (def CREATURE->POTIONS {\A 0, \B 1, \C 3, \D 5})
 
 (defn solution [part & {:keys [test-input]}]
-  (let [input (or test-input (get-input part))]
+  (let [input (or test-input (file->str 1 part))]
     (->> input
          (partition part)
          (map (fn [creatures] (keep #(when (not= % \x) (CREATURE->POTIONS %)) creatures)))
