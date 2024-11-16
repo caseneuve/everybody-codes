@@ -7,13 +7,12 @@
        (re-seq #"\d+")
        (map read-string)
        (partition 4)
-       (map vec)
        (apply mapv vector)))
 
 (defn dance [dancers round]
-  (let [cur-idx (mod round 4), cur-col (get dancers cur-idx)
+  (let [cur-idx (mod round 4), cur-col (dancers cur-idx)
         clapper (first cur-col)
-        nxt-idx (mod (inc round) 4), nxt-col (get dancers nxt-idx)
+        nxt-idx (mod (inc round) 4), nxt-col (dancers nxt-idx)
         direction-changes (quot clapper (count nxt-col))
         claps-remaining (rem clapper (count nxt-col))
         transform-fn (if (even? direction-changes) identity reverse)
