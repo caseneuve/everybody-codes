@@ -6,15 +6,16 @@
  {solve
   {:doc "  run solution for given quest, if part not give, all parts will be run"
    :task
-
-   (let [[quest part] *command-line-args*
-         main (symbol (format "quest%02d.solution" (Integer. quest)) "-main")]
+   (let [[quest part] *command-line-args*, q (Integer. quest)
+         main (symbol (format "quest%02d.solution" q) "-main")]
      (when (nil? quest) (println "provide quest number!") (System/exit 1))
      (try
+       (printf "\nquest %02d\n%s\n" q (apply str (repeat 28 "-")))
        (time
-        (let [solutions ((requiring-resolve main) (Integer. (or part 0)))]
-          (doseq [[p r] solutions] (printf "part%s: %10s\n" p r))))
+        (let [solutions ((requiring-resolve main) (keyword part))]
+          (doseq [[p r] solutions] (printf "part %s: %20s\n" p r))
+          (println)))
        (catch java.lang.Exception e
-         (println "Could not run solution for quest" quest (if part (str "part" part) ""))
+         (println "Could not run solution for quest" quest (if part (str "part " part) ""))
          (println "Error:" (str e)))))}}
  }

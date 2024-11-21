@@ -1,5 +1,5 @@
 (ns quest01.solution
-  (:require [tools.input :refer [file->str]]))
+  (:require [tools.io :refer [file->str solve]]))
 
 (def CREATURE->POTIONS {\A 0, \B 1, \C 3, \D 5})
 
@@ -22,7 +22,4 @@
   (solution 3) ; => 27922
   )
 
-
-(defn -main [part]
-  (for [p [1 2 3] :when (or (= p part) (zero? part))]
-    [p (solution p)]))
+(defn -main [part] (solve part [#(solution 1), #(solution 2), #(solution 3)]))

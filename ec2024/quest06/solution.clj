@@ -1,5 +1,5 @@
 (ns quest06.solution
-  (:require [tools.input :refer [file->str]]
+  (:require [tools.io :refer [file->str solve]]
             [clojure.string :refer [split-lines]]))
 
 (defn mktree [it]
@@ -13,7 +13,7 @@
         {})))
 
 (defn solution [part & {:keys [test-input]}]
-  (let [tree (mktree (or test-input (file->str (str "input" part))))
+  (let [tree (mktree (or test-input (file->str 6 (str "input" part))))
         root "RR"
         describe (if (= part 1) identity first)]
     (loop [Q (into clojure.lang.PersistentQueue/EMPTY [[root]]), fruit-branches []]
@@ -47,3 +47,5 @@ H:@"]
      :3 (solution 3) ;; => "RPMNGXRKWBMF@"
      })
   )
+
+(defn -main [part] (solve part [#(solution 1), #(solution 2), #(solution 3)]))

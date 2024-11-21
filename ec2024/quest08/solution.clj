@@ -1,6 +1,6 @@
 (ns quest08.solution
-  (:require [clojure.math :as math]))
-
+  (:require [clojure.math :as math]
+            [tools.io :refer [solve]]))
 
 ;; I
 (defn part1 [n]
@@ -9,10 +9,10 @@
         width (dec (* 2 square))]
     (int (* diff width))))
 
-(do
+(comment
   (assert (= 21 (part1 13)))
-  (prn :part1 (part1 4098734)))
-
+  (part1 4098734)  ;;=> 7656659
+  )
 
 ;; II
 (defn part2 [priests acolytes available]
@@ -26,10 +26,10 @@
             blocks (* new-thick width)]
         (recur (inc layer) (+ total-blocks blocks) new-thick)))))
 
-(do
+(comment
   (assert (= 27 (part2 3 5 50)))
-  (prn :part2 (part2 959 1111 20240000)))
-
+  (part2 959 1111 20240000)  ;;=> 112134000
+  )
 
 ;; III
 (defn rm-blocks [heights priests acolytes]
@@ -48,6 +48,12 @@
               blocks (apply + (first new-heights) (map #(* 2 %) (rest new-heights)))]
           (recur (inc layer), blocks, new-thick, new-heights))))))
 
-(do
+(comment
   (assert (= 2 (part3 2 5 160)))
-  (prn :part3 (part3 944347 10 202400000)))
+  (part3 944347 10 202400000) ;;=> 41082
+  )
+
+(defn -main [part]
+  (solve part [#(part1 4098734),
+               #(part2 959 1111 20240000),
+               #(part3 944347 10 202400000)]))

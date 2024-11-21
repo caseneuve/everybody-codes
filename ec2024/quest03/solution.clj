@@ -1,5 +1,5 @@
 (ns quest03.solution
-  (:require [tools.input :refer [file->str]]
+  (:require [tools.io :refer [file->str solve]]
             [tools.grid :as grid]))
 
 (defn dig [old adjacent-fn]
@@ -13,7 +13,7 @@
 
 (defn solution [part & {:keys [notes]}]
   (let [adj-fn (if (= part 3) grid/adjacent-all grid/adjacent-xy)
-        input (or notes (file->str (format "input%d" part)))]
+        input (or notes (file->str 3 (format "input%d" part)))]
     (loop [g (grid/make input {:parse-fn #(case % \. 0 \# 1)})]
       (let [[changed? new] (dig g adj-fn)]
         (if changed? (recur new) (->> new vals (apply +)))))))
@@ -42,3 +42,5 @@
 
   (solution 3) ;; => 10427
   )
+
+(defn -main [part] (solve part [#(solution 1), #(solution 2), #(solution 3) ]))

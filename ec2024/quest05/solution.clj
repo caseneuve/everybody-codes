@@ -1,5 +1,5 @@
 (ns quest05.solution
-  (:require [tools.input :refer [file->str]]
+  (:require [tools.io :refer [file->str solve]]
             [clojure.edn :refer [read-string]]))
 
 (defn parse [it]
@@ -49,18 +49,21 @@
               shout (read-string (apply str (map first new-order)))]
           (recur new-order (inc round) (max shout highest))))))
 
+(def input #(->> % (str "input") (file->str 5) parse))
 
 (comment
   (let [test1   (parse "2 3 4 5\n3 4 5 2\n4 5 2 3\n5 2 3 4")
-        test2-3 (parse "2 3 4 5\n6 7 8 9")
-        it     #(parse (file->str (str "input" %)))]
+        test2-3 (parse "2 3 4 5\n6 7 8 9")]
 
     (assert (= "2323"   (part1 test1)))
     (assert (= 50877075 (part2 test2-3)))
     (assert (= 6584     (part3 test2-3)))
 
-    {:1 (part1 (it 1))  ;; => "2233"
-     :2 (part2 (it 2))  ;; => 17386198904492
-     :3 (part3 (it 3))  ;; => 9289100310028839
-     })
+    (part1 (input 1)) ;; => "2233"
+    (part2 (input 2)) ;; => 17386198904492
+    (part3 (input 3)) ;; => 9289100310028839
+    )
   )
+
+(defn -main [part]
+  (solve part [#(part1 (input 1)), #(part2 (input 2)), #(part3 (input 3))]))

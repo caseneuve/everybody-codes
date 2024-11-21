@@ -1,9 +1,8 @@
 (ns quest07.solution
-  (:require [tools.input :refer [file->str]]
+  (:require [tools.io :refer [file->str solve]]
             [clojure.string :refer [split-lines]]
             [tools.grid :as grid]
             [clojure.math.combinatorics :as combo]))
-
 
 (def ACTIONS {"+" inc "-" dec "=" identity})
 
@@ -87,7 +86,6 @@
          (filter #(> % rival-score))
          count)))
 
-
 (comment
 
   (let [test1 "A:+,-,=,=
@@ -98,14 +96,11 @@ D:=,=,=,+"
 -   +
 =+=-+"]
     (assert (= "BDCA" (part1 {:notes test1})))
-    (assert (= "DCBA" (part2 {:notes test1 :track track2})))))
+    (assert (= "DCBA" (part2 {:notes test1 :track track2}))))
 
+  (part1) ;;=> "KDJABECGH"
+  (part2) ;;=> "JBDAHGIKE"
+  (part3) ;;=> 5797
+  )
 
-;; (prn
-;;  {:part1 (part1)
-;;   :part2 (part2)
-;;   :part3 (part3)})
-
-(defn -main [part]
-  (for [p [1 2 3] :when (or (= p part) (zero? part))]
-    [p (({1 part1 2 part2 3 part3} p))]))
+(defn -main [part] (solve part [part1 part2 part3]))
