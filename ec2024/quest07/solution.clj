@@ -1,8 +1,8 @@
 (ns quest07.solution
-  (:require [tools.io :refer [file->str solve]]
+  (:require [clojure.math.combinatorics :as combo]
             [clojure.string :refer [split-lines]]
             [tools.grid :as grid]
-            [clojure.math.combinatorics :as combo]))
+            [tools.io :refer [file->str solve]]))
 
 (def ACTIONS {"+" inc "-" dec "=" identity})
 
@@ -87,7 +87,6 @@
          count)))
 
 (comment
-
   (let [test1 "A:+,-,=,=
 B:+,=,-,+
 C:=,-,+,+
