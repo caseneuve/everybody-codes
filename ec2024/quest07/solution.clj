@@ -62,11 +62,9 @@
              (map first)
              (apply str))
         (recur (inc round)
-               (merge-with concat results
-                           (into {} (for [chariot (keys S)
-                                          :let [strategy (S chariot)
-                                                init-power (last (results chariot))]]
-                                      [chariot (score T strategy round init-power)]))))))))
+               (reduce
+                (fn [R [ch st]] (update R ch concat (score T st round (last (results ch)))))
+                results S))))))
 
 (defn part3 []
   (let [rival-plan (-> (file->str 7 "input3") strategies (get "A"))
