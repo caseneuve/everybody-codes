@@ -12,7 +12,7 @@
        (quot (count nums) 2)))
 
 (defn solution [part & {:keys [test-input]}]
-  (let [nums (map read-string (or test-input (file->lines 4 part)))
+  (let [nums (map read-string (or test-input (file->lines (str "input" part))))
         sub-fn (if (= part 3) median smallest)]
     (apply + (map #(abs (- % (sub-fn nums))) nums))))
 

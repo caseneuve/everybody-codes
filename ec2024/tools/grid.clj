@@ -1,12 +1,13 @@
 (ns tools.grid)
 
-(defn make [input]
+(defn make [input & {:keys [parse-fn]}]
   (first
    (reduce
     (fn [[g [y x]] ch]
       (if (= ch \newline)
         [g [(inc y) 0]],
-        [(assoc g [y x] (case ch \. 0 \# 1)) [y (inc x)]]))
+        [(assoc g [y x] (parse-fn ch) ;; (case ch \. 0 \# 1)
+                ) [y (inc x)]]))
     [(sorted-map) [0 0]] input)))
 
 (defn show [g]

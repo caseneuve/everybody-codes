@@ -13,7 +13,7 @@
         {})))
 
 (defn solution [part & {:keys [test-input]}]
-  (let [tree (mktree (or test-input (file->str 6 part)))
+  (let [tree (mktree (or test-input (file->str (str "input" part))))
         root "RR"
         describe (if (= part 1) identity first)]
     (loop [Q (into clojure.lang.PersistentQueue/EMPTY [[root]]), fruit-branches []]

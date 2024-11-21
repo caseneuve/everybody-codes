@@ -53,13 +53,13 @@
 (comment
   (let [test1   (parse "2 3 4 5\n3 4 5 2\n4 5 2 3\n5 2 3 4")
         test2-3 (parse "2 3 4 5\n6 7 8 9")
-        it     #(parse (file->str 5 %))]
+        it     #(parse (file->str (str "input" %)))]
 
     (assert (= "2323"   (part1 test1)))
     (assert (= 50877075 (part2 test2-3)))
     (assert (= 6584     (part3 test2-3)))
 
-    {:1 (part1 (it 1))  ;; => 2233
+    {:1 (part1 (it 1))  ;; => "2233"
      :2 (part2 (it 2))  ;; => 17386198904492
      :3 (part3 (it 3))  ;; => 9289100310028839
      })

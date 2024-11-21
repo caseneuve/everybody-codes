@@ -11,10 +11,10 @@
             (let [dig? (every? #(= cur-lvl %) (for [point (adjacent-fn key)] (old point 0)))]
               (recur keys (assoc new key (if dig? (inc cur-lvl) cur-lvl)) (or changed dig?))))))))
 
-(defn solution [part & {:keys [test-input]}]
+(defn solution [part & {:keys [notes]}]
   (let [adj-fn (if (= part 3) grid/adjacent-all grid/adjacent-xy)
-        input (or test-input (file->str 3 part))]
-    (loop [g (grid/make input)]
+        input (or notes (file->str (format "input%d" part)))]
+    (loop [g (grid/make input {:parse-fn #(case % \. 0 \# 1)})]
       (let [[changed? new] (dig g adj-fn)]
         (if changed? (recur new) (->> new vals (apply +)))))))
 
@@ -26,7 +26,7 @@
 ..######..
 ...####...
 .........."]
-    (assert (= 35 (solution 1 {:test-input part1}))))
+    (assert (= 35 (solution 1 {:notes part1}))))
 
   (solution 1) ;; => 129
   (solution 2) ;; => 2789
@@ -38,7 +38,7 @@
 ..######..
 ...####...
 .........."]
-    (assert (= 29 (solution 3 {:test-input part3}))))
+    (assert (= 29 (solution 3 {:notes part3}))))
 
   (solution 3) ;; => 10427
   )
