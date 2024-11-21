@@ -1,4 +1,20 @@
 {:paths ["."]
  :deps {org.clojure/math.numeric-tower {:mvn/version "0.0.5"}
         org.clojure/math.combinatorics {:mvn/version "0.2.0"}}
+
+ :tasks
+ {solve
+  {:doc "  run solution for given quest, if part not give, all parts will be run"
+   :task
+
+   (let [[quest part] *command-line-args*
+         main (symbol (format "quest%02d.solution" (Integer. quest)) "-main")]
+     (when (nil? quest) (println "provide quest number!") (System/exit 1))
+     (try
+       (time
+        (let [solutions ((requiring-resolve main) (Integer. (or part 0)))]
+          (doseq [[p r] solutions] (printf "part%s: %10s\n" p r))))
+       (catch java.lang.Exception e
+         (println "Could not run solution for quest" quest (if part (str "part" part) ""))
+         (println "Error:" (str e)))))}}
  }

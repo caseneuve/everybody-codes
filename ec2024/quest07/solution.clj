@@ -29,7 +29,7 @@
    (as-> powers [(apply + powers) (last powers)])))
 
 (defn part1 [& {:keys [notes]}]
-  (let [S (->> (or notes (file->str "input1")) strategies)
+  (let [S (->> (or notes (file->str 7 "input1")) strategies)
         track (map-indexed vector (repeat 10 "="))]
     (->> S
          (reduce
@@ -53,8 +53,8 @@
           (recur move-to, (conj seen pos), (cond-> track act (conj act))))))))
 
 (defn part2 [& {:keys [notes track]}]
-  (let [S (strategies (or notes (file->str "input2")))
-        T (map-indexed vector (mktrack (or track (file->str "track2"))))]
+  (let [S (strategies (or notes (file->str 7 "input2")))
+        T (map-indexed vector (mktrack (or track (file->str 7 "track2"))))]
     (loop [round 0, results (zipmap (keys S) (repeat [0 10]))]
       (if (= round 10)
         (->> results
@@ -72,8 +72,8 @@
                    [chariot (score T strategy round init-power)]))))))))
 
 (defn part3 []
-  (let [rival-plan (-> (strategies (file->str "input3")) (get "A"))
-        track (mapv vector (range) (mktrack (file->str "track3")))
+  (let [rival-plan (-> (strategies (file->str 7 "input3")) (get "A"))
+        track (mapv vector (range) (mktrack (file->str 7 "track3")))
         race-result-for (fn [strategy]
                           (loop [round 0, result 0, power 10]
                             (if (= round (count strategy)) result ;; since (= 0 (mod 2024 (count strategy)))
@@ -101,7 +101,11 @@ D:=,=,=,+"
     (assert (= "DCBA" (part2 {:notes test1 :track track2})))))
 
 
-(prn
- {:part1 (part1)
-  :part2 (part2)
-  :part3 (part3)})
+;; (prn
+;;  {:part1 (part1)
+;;   :part2 (part2)
+;;   :part3 (part3)})
+
+(defn -main [part]
+  (for [p [1 2 3] :when (or (= p part) (zero? part))]
+    [p (({1 part1 2 part2 3 part3} p))]))

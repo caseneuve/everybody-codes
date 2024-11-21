@@ -4,7 +4,7 @@
 (def CREATURE->POTIONS {\A 0, \B 1, \C 3, \D 5})
 
 (defn solution [part & {:keys [notes]}]
-  (let [input (or notes (file->str (format "input%d" part)))]
+  (let [input (or notes (file->str 1 (format "input%d" part)))]
     (->> input
          (partition part)
          (map (fn [creatures] (keep #(when (not= % \x) (CREATURE->POTIONS %)) creatures)))
@@ -21,3 +21,8 @@
   (assert (= (solution 3 {:notes "xBxAAABCDxCC"}) 30))
   (solution 3) ; => 27922
   )
+
+
+(defn -main [part]
+  (for [p [1 2 3] :when (or (= p part) (zero? part))]
+    [p (solution p)]))
