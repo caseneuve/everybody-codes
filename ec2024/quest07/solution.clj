@@ -62,16 +62,14 @@
              (map first)
              (apply str))
         (recur (inc round)
-               (merge-with
-                concat
-                results
-                (into
-                 {}
-                 (for [chariot (keys S) :let [strategy (S chariot), init-power (last (results chariot))]]
-                   [chariot (score T strategy round init-power)]))))))))
+               (merge-with concat results
+                           (into {} (for [chariot (keys S)
+                                          :let [strategy (S chariot)
+                                                init-power (last (results chariot))]]
+                                      [chariot (score T strategy round init-power)]))))))))
 
 (defn part3 []
-  (let [rival-plan (-> (strategies (file->str 7 "input3")) (get "A"))
+  (let [rival-plan (-> (file->str 7 "input3") strategies (get "A"))
         track (mapv vector (range) (mktrack (file->str 7 "track3")))
         race-result-for (fn [strategy]
                           (loop [round 0, result 0, power 10]
@@ -79,8 +77,7 @@
                                 (let [[essence last-power] (score track strategy round power)]
                                   (recur (inc round) (+ result essence) last-power)))))
         rival-score (race-result-for rival-plan)
-        all-plans (combo/permutations rival-plan)
-        ]
+        all-plans (combo/permutations rival-plan)]
     (->> all-plans
          (pmap race-result-for)
          (filter #(> % rival-score))
