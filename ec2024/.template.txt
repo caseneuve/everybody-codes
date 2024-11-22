@@ -1,0 +1,18 @@
+(ns quest%02d.solution
+  (:require [tools.io :refer [file->str solve]]))
+
+
+
+(comment
+  (let [ii "
+
+"
+        ;; ii (file->str %d "input1")
+        ]
+    (->> ii
+
+         )
+    )
+  )
+
+(defn -main [part] (solve part []))

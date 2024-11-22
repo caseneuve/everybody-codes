@@ -3,19 +3,41 @@
         org.clojure/math.combinatorics {:mvn/version "0.2.0"}}
 
  :tasks
- {solve
-  {:doc "  run solution for given quest, if part not give, all parts will be run"
+ {:requires ([babashka.fs :as fs])
+  :init
+  (do
+    (defn ensure-q [q]
+      (if (nil? q) (do (println "provide quest number!") (System/exit 1))
+          (Integer. q))))
+
+  solve
+  {:doc "  run solution for given quest and part (all parts by default)"
    :task
-   (let [[quest part] *command-line-args*, q (Integer. quest)
-         main (symbol (format "quest%02d.solution" q) "-main")]
-     (when (nil? quest) (println "provide quest number!") (System/exit 1))
+   (let [[quest part] *command-line-args*
+         qu (ensure-q quest)
+         pa (keyword part)
+         main (symbol (format "quest%02d.solution" qu) "-main")]
      (try
-       (printf "\nquest %02d\n%s\n" q (apply str (repeat 28 "-")))
+       (printf "\nquest %02d\n%s\n" qu (apply str (repeat 28 "-")))
        (time
-        (let [solutions ((requiring-resolve main) (keyword part))]
-          (doseq [[p r] solutions] (printf "part %s: %20s\n" p r))
+        (let [solutions ((requiring-resolve main) pa)]
+          (if (empty? solutions) (println "???")
+              (doseq [[p r] solutions] (printf "part %s: %20s\n" p r)))
           (println)))
        (catch java.lang.Exception e
-         (println "Could not run solution for quest" quest (if part (str "part " part) ""))
-         (println "Error:" (str e)))))}}
+         (println "Could not run solution for quest" qu (if pa (str "part " part) ""))
+         (println "Error:" (str e)))))}
+
+  init
+  {:doc "  create quest files for given day"
+   :task
+   (let [qu (ensure-q (first *command-line-args*))
+         dir (format "quest%02d" qu)
+         sol (format "%s/solution.clj" dir)]
+     (try
+       (printf "Creating %s...\n" dir)
+       (fs/create-dir dir)
+       (printf "Creating %s...\n" sol)
+       (spit sol (format (slurp "./.template.txt") qu qu))
+       (catch java.lang.Exception e (println "Error: " (str e)))))}}
  }
